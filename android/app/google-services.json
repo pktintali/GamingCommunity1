@@ -1,0 +1,41 @@
+{
+  "project_info": {
+    "project_number": "67704158373",
+    "firebase_url": "https://indian-gaming-community.firebaseio.com",
+    "project_id": "indian-gaming-community",
+    "storage_bucket": "indian-gaming-community.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67704158373:android:625f333c171ab042",
+        "android_client_info": {
+          "package_name": "com.tdevelopersindia.indian_gaming_community"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "67704158373-vtqgtok43b829k1s96e3tslp6su3er6u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIQoDicYr0I2Zp4gbMabJrKkRWBib7biQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "67704158373-vtqgtok43b829k1s96e3tslp6su3er6u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-5861053171904035~4393052333"
+    }
+  ],
+  "configuration_version": "1"
+}

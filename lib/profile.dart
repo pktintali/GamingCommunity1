@@ -1,35 +1,106 @@
 import 'package:flutter/material.dart';
-import 'connection.dart';
+import 'package:android_intent/android_intent.dart';
+import 'dart:io' show Platform;
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:indian_gaming_community/Streamers.dart';
+import 'joinSocial.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 
-//TODO:this was comment
-//ConnectionsStatus _connectionsStatus = ConnectionsStatus();
+JoinSocial _joinSocial = JoinSocial();
+Streamers streamers = Streamers();
+int fav = 0;
+
+MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+  keywords: <String>[
+    'shopping',
+    'beautiful apps',
+    'pubg',
+    'youtube streamer'
+        'gaming'
+        'india',
+    'hindi',
+  ],
+  birthday: DateTime.now(),
+  childDirected: false,
+  designedForFamilies: false,
+  gender: MobileAdGender.male,
+  testDevices: <String>[],
+);
 
 class Profile extends StatefulWidget {
+  static const id = 'profile';
   final String name;
   final String url;
   final String tag;
-  Profile({this.name, this.url, this.tag});
+  final status; //ic_launcher
+  Profile({this.name, this.url, this.tag, this.status});
   @override
-  _ProfileState createState() => _ProfileState(name, url, tag);
+  _ProfileState createState() => _ProfileState(name, url, tag, status);
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
+  BannerAd myBanner = BannerAd(
+    adUnitId: 'ca-app-pub-5861053171904035/4198445369',
+    size: AdSize.smartBanner,
+    targetingInfo: targetingInfo,
+    listener: (MobileAdEvent event) {
+      print("BannerAd event is $event");
+    },
+  );
+  InterstitialAd myInterstitial = InterstitialAd(
+    adUnitId: 'ca-app-pub-5861053171904035/4538438281',
+    targetingInfo: targetingInfo,
+    listener: (MobileAdEvent event) {
+      print("InterstitialAd event is $event");
+    },
+  );
+
+  final String name;
+  final String url;
+  final String tag;
+  final status;
+  _ProfileState(this.name, this.url, this.tag, this.status);
+  double _scale;
+  AnimationController _controller;
+
   @override
   void initState() {
     super.initState();
-    //TODO:this was comment
-//    _connectionsStatus.connect();
-//    _connectionsStatus.initConnectivity();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 200),
+      lowerBound: 0.0,
+      upperBound: 0.1,
+    )..addListener(() {
+        setState(() {});
+      });
   }
 
-  final String name;
-  final String url;
-  final String tag;
-  _ProfileState(this.name, this.url, this.tag);
+  @override
+  void dispose() {
+    myBanner.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onTapDown(TapDownDetails details) {
+    _controller.forward();
+  }
+
+  void _onTapUp(TapUpDetails details) {
+    _controller.reverse();
+  }
+
   @override
   Widget build(BuildContext context) {
-    //TODO:this was comment
-    // print(_connectionsStatus.status());
+    myBanner
+      ..load()
+      ..show(
+        anchorOffset: 0.0,
+        anchorType: AnchorType.bottom,
+      );
+
+    _scale = 1 - _controller.value;
     return Scaffold(
       backgroundColor: Color(0xFFFDDDEC),
       appBar: AppBar(
@@ -39,6 +110,7 @@ class _ProfileState extends State<Profile> {
           name,
           style: TextStyle(
             fontSize: 26.0,
+            letterSpacing: 2.0,
           ),
         ),
         centerTitle: true,
@@ -91,7 +163,15 @@ class _ProfileState extends State<Profile> {
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         fillColor: Colors.white,
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (Platform.isAndroid) {
+                            AndroidIntent intent = AndroidIntent(
+                              action: 'action_view',
+                              data: _joinSocial.joinYoutube(name, 'join'),
+                            );
+                            await intent.launch();
+                          }
+                        },
                         child: Padding(
                           padding: const EdgeInsets.only(
                               left: 30, right: 30, top: 10, bottom: 10),
@@ -108,32 +188,170 @@ class _ProfileState extends State<Profile> {
                     ),
                   ],
                 ),
-                Text(
-                  '230K',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+                Center(
+                  child: Text(
+                    'Social Media',
+                    style: TextStyle(
+                        fontSize: 17.0,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'LexendPeta'),
                   ),
                 ),
-                Text(
-                  'Family Members',
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.black54,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    FloatingActionButton(
+                      mini: true,
+                      heroTag: null,
+                      child: Image.asset(
+                        'images/icons/yt3d.png',
+                        height: 30,
+                        width: 30,
+                      ),
+                      onPressed: () async {
+                        if (Platform.isAndroid) {
+                          AndroidIntent intent = AndroidIntent(
+                            action: 'action_view',
+                            data: _joinSocial.joinYoutube(name, 'channel'),
+                          );
+                          await intent.launch();
+                        }
+                      },
+                      backgroundColor: Colors.transparent,
+                      elevation: 0.0,
+                    ),
+                    FloatingActionButton(
+                      mini: true,
+                      heroTag: null,
+                      child: Image.asset(
+                        'images/icons/fb3d.png',
+                        height: 30,
+                        width: 30,
+                      ),
+                      onPressed: () async {
+                        if (Platform.isAndroid) {
+                          AndroidIntent intent = AndroidIntent(
+                            action: 'action_view',
+                            data: _joinSocial.joinFb(name),
+                          );
+                          await intent.launch();
+                        }
+                      },
+                      backgroundColor: Colors.transparent,
+                      elevation: 0.0,
+                    ),
+                    FloatingActionButton(
+                      mini: true,
+                      heroTag: null,
+                      child: Image.asset(
+                        'images/icons/insta3d.png',
+                        height: 30,
+                        width: 30,
+                      ),
+                      onPressed: () async {
+                        if (Platform.isAndroid) {
+                          AndroidIntent intent = AndroidIntent(
+                            action: 'action_view',
+                            data: _joinSocial.joinInsta(name),
+                          );
+                          await intent.launch();
+                        }
+                      },
+                      backgroundColor: Colors.transparent,
+                      elevation: 0.0,
+                    ),
+                    FloatingActionButton(
+                      mini: true,
+                      heroTag: null,
+                      child: Image.asset(
+                        'images/icons/twit3d.png',
+                        height: 30,
+                        width: 30,
+                      ),
+                      onPressed: () async {
+                        if (Platform.isAndroid) {
+                          AndroidIntent intent = AndroidIntent(
+                            action: 'action_view',
+                            data: _joinSocial.joinTwit(name),
+                          );
+                          await intent.launch();
+                        }
+                      },
+                      backgroundColor: Colors.transparent,
+                      elevation: 0.0,
+                    ),
+                    FloatingActionButton(
+                      mini: true,
+                      heroTag: null,
+                      child: Image.asset(
+                        'images/icons/ds3d.png',
+                        height: 30,
+                        width: 30,
+                      ),
+                      onPressed: () async {
+                        if (Platform.isAndroid) {
+                          AndroidIntent intent = AndroidIntent(
+                            action: 'action_view',
+                            data: _joinSocial.joinDiscord(name),
+                          );
+                          await intent.launch();
+                        }
+                      },
+                      backgroundColor: Colors.transparent,
+                      elevation: 0.0,
+                    ),
+                  ],
                 ),
                 Column(
                   children: <Widget>[
-                    reusableButton(
-                        logo: 'images/youtubeIco.png',
-                        title: 'Subscribe on Youtube',
-                        color: Colors.red),
-                    reusableButton(
-                        logo: 'images/discordIcon.png',
-                        title: 'Join Discord',
-                        color: Colors.blue),
-                    reusableButton(
-                        logo: 'images/youtubeIco.png', title: 'Instagram'),
+                    GestureDetector(
+                      onTap: () {
+                        myInterstitial
+                          ..load()
+                          ..show(
+                            anchorType: AnchorType.bottom,
+                            anchorOffset: 0.0,
+                          );
+                        Navigator.of(context).push(PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (BuildContext context, _, __) =>
+                                WebService(
+                                    'https://livecounts.net/channel/${_joinSocial.liveSub(name)}')));
+                      },
+                      onTapDown: _onTapDown,
+                      onTapUp: _onTapUp,
+                      child: Transform.scale(
+                        scale: _scale,
+                        child: _animatedButtonUI,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 40),
+                      child: FloatingActionButton(
+                        elevation: 20,
+                        tooltip: 'Add To Favourite',
+                        backgroundColor: Color(0xFFA7B0E8),
+                        onPressed: () {
+                          if (fav == 0) {
+                            fav = 1;
+                          } else {
+                            fav = 0;
+                          }
+                          setState(() {});
+                        },
+                        child: Icon(
+                          myFavIconData(),
+                          color: Colors.red,
+                          size: 30,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
                   ],
                 ),
               ],
@@ -144,54 +362,76 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget reusableButton({String logo, String title, Color color}) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(5.0, 5.0, 30.0, 5.0),
-      child: FlatButton(
-        shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.blueAccent, width: 0.5),
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(60.0),
-          ),
-        ),
-        color: Colors.white70,
-        onPressed: () {},
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Row(
-            //mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              ImageIcon(
-                AssetImage(logo),
-                size: 40,
-                color: color,
-              ),
-              SizedBox(
-                width: 20.0,
-              ),
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 22.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  IconData myFavIconData() {
+    if (fav == 1) {
+      return Icons.favorite;
+    } else
+      return Icons.favorite_border;
   }
 
   ImageProvider imgData(String url) {
-    //TODO:this was comment
-//    if (_connectionsStatus.status() == 1) {
-//      return NetworkImage(url);
-//    }
-//    if (_connectionsStatus.status() == 0) {
-//      return AssetImage('images/avatar.png');
-//    } else {
-    return AssetImage('images/avatar.png');
-    //}
+    if (status == 'ConnectivityResult.mobile' ||
+        status == 'ConnectivityResult.wifi') {
+      return NetworkImage(url);
+    } else {
+      return AssetImage('images/avatar.png');
+    }
+  }
+
+  Widget get _animatedButtonUI => Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Container(
+          height: 70,
+          width: 230,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey,
+                blurRadius: 20.0,
+                offset: Offset(8, 8),
+                spreadRadius: 5.0,
+              )
+            ],
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFFA7BFE8),
+                Color(0xFF5600E8),
+              ],
+            ),
+          ),
+          child: Center(
+            child: Text(
+              'Live Sub. Count',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      );
+}
+
+class WebService extends StatelessWidget {
+  final String url;
+  WebService(this.url);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Live Sub. Count'),
+      ),
+      body: Container(
+        child: WebView(
+          javascriptMode: JavascriptMode.unrestricted,
+          initialUrl: url,
+        ),
+      ),
+    );
   }
 }
