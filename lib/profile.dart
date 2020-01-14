@@ -3,39 +3,34 @@ import 'package:android_intent/android_intent.dart';
 import 'dart:io' show Platform;
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:indian_gaming_community/Streamers.dart';
-import 'joinSocial.dart';
 import 'package:firebase_admob/firebase_admob.dart';
+import 'constants.dart';
 
-JoinSocial _joinSocial = JoinSocial();
 Streamers streamers = Streamers();
 int fav = 0;
 
-MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-  keywords: <String>[
-    'shopping',
-    'beautiful apps',
-    'pubg',
-    'youtube streamer'
-        'gaming'
-        'india',
-    'hindi',
-  ],
-  birthday: DateTime.now(),
-  childDirected: false,
-  designedForFamilies: false,
-  gender: MobileAdGender.male,
-  testDevices: <String>[],
-);
-
 class Profile extends StatefulWidget {
-  static const id = 'profile';
   final String name;
   final String url;
   final String tag;
-  final status; //ic_launcher
-  Profile({this.name, this.url, this.tag, this.status});
+  final status;
+  final String logo;
+  final String insta;
+  final String fb;
+  final String twit;
+  final String disc;
+  Profile(
+      {this.name,
+      this.url,
+      this.tag,
+      this.status,
+      this.logo,
+      this.insta,
+      this.fb,
+      this.twit,
+      this.disc});
   @override
-  _ProfileState createState() => _ProfileState(name, url, tag, status);
+  _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
@@ -55,11 +50,6 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     },
   );
 
-  final String name;
-  final String url;
-  final String tag;
-  final status;
-  _ProfileState(this.name, this.url, this.tag, this.status);
   double _scale;
   AnimationController _controller;
 
@@ -107,7 +97,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
         backgroundColor: Color(0xFF5600E8),
         elevation: 0.0,
         title: Text(
-          name,
+          widget.name,
           style: TextStyle(
             fontSize: 26.0,
             letterSpacing: 2.0,
@@ -141,12 +131,12 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                               ),
                             ),
                             Hero(
-                              tag: tag,
+                              tag: widget.tag,
                               child: Container(
                                 child: CircleAvatar(
                                   backgroundColor: Colors.white,
                                   radius: 100.0,
-                                  backgroundImage: imgData(url),
+                                  backgroundImage: imgData(widget.logo),
                                 ),
                               ),
                             ),
@@ -167,7 +157,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                           if (Platform.isAndroid) {
                             AndroidIntent intent = AndroidIntent(
                               action: 'action_view',
-                              data: _joinSocial.joinYoutube(name, 'join'),
+                              data: '${widget.url}/join',
                             );
                             await intent.launch();
                           }
@@ -212,7 +202,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         if (Platform.isAndroid) {
                           AndroidIntent intent = AndroidIntent(
                             action: 'action_view',
-                            data: _joinSocial.joinYoutube(name, 'channel'),
+                            data: widget.url,
                           );
                           await intent.launch();
                         }
@@ -232,7 +222,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         if (Platform.isAndroid) {
                           AndroidIntent intent = AndroidIntent(
                             action: 'action_view',
-                            data: _joinSocial.joinFb(name),
+                            data: widget.fb,
                           );
                           await intent.launch();
                         }
@@ -252,7 +242,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         if (Platform.isAndroid) {
                           AndroidIntent intent = AndroidIntent(
                             action: 'action_view',
-                            data: _joinSocial.joinInsta(name),
+                            data: widget.insta,
                           );
                           await intent.launch();
                         }
@@ -272,7 +262,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         if (Platform.isAndroid) {
                           AndroidIntent intent = AndroidIntent(
                             action: 'action_view',
-                            data: _joinSocial.joinTwit(name),
+                            data: widget.twit,
                           );
                           await intent.launch();
                         }
@@ -292,7 +282,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         if (Platform.isAndroid) {
                           AndroidIntent intent = AndroidIntent(
                             action: 'action_view',
-                            data: _joinSocial.joinDiscord(name),
+                            data: widget.disc,
                           );
                           await intent.launch();
                         }
@@ -316,7 +306,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                             opaque: false,
                             pageBuilder: (BuildContext context, _, __) =>
                                 WebService(
-                                    'https://livecounts.net/channel/${_joinSocial.liveSub(name)}')));
+                                    'https://livecounts.net/channel/${widget.name}')));
                       },
                       onTapDown: _onTapDown,
                       onTapUp: _onTapUp,
@@ -335,10 +325,29 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                         tooltip: 'Add To Favourite',
                         backgroundColor: Color(0xFFA7B0E8),
                         onPressed: () {
+                          for (String i in favName) {
+                            if (i == widget.name) {
+                              fav = 1;
+                              break;
+                            }
+                          }
                           if (fav == 0) {
-                            fav = 1;
+                            favName.add(widget.name);
+                            favLogo.add(widget.logo);
+                            favUrl.add(widget.url);
+                            favDisc.add(widget.disc);
+                            favInsta.add(widget.insta);
+                            favFb.add(widget.fb);
+                            favTwit.add(widget.twit);
                           } else {
                             fav = 0;
+                            favName.remove(widget.name);
+                            favLogo.remove(widget.logo);
+                            favUrl.remove(widget.url);
+                            favDisc.remove(widget.disc);
+                            favInsta.remove(widget.insta);
+                            favFb.remove(widget.fb);
+                            favTwit.remove(widget.twit);
                           }
                           setState(() {});
                         },
@@ -362,16 +371,25 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     );
   }
 
+  int k = 0;
   IconData myFavIconData() {
-    if (fav == 1) {
+    for (String i in favName) {
+      if (i == widget.name) {
+        k = 1;
+        break;
+      } else {
+        k = 0;
+      }
+    }
+    if (k == 1) {
       return Icons.favorite;
     } else
       return Icons.favorite_border;
   }
 
   ImageProvider imgData(String url) {
-    if (status == 'ConnectivityResult.mobile' ||
-        status == 'ConnectivityResult.wifi') {
+    if (widget.status == 'ConnectivityResult.mobile' ||
+        widget.status == 'ConnectivityResult.wifi') {
       return NetworkImage(url);
     } else {
       return AssetImage('images/avatar.png');

@@ -1,7 +1,7 @@
 class Streamers {
   List<String> topStreamer = [
-    'DYNAMO GAMING',
     'MORTAL',
+    'DYNAMO GAMING',
     'CarryisLive',
     'KRONTEN GAMING',
     'RAWKNEE GAMES',
@@ -11,8 +11,8 @@ class Streamers {
   ];
 
   List<String> topStreamerTwitter = [
-    'https://twitter.com/Aadii_Sawant',
     'https://twitter.com/Mortal04907880',
+    'https://twitter.com/Aadii_Sawant',
     'https://twitter.com/CarryMinati',
     'kronten',
     'https://twitter.com/TheRawKnee',
@@ -22,8 +22,8 @@ class Streamers {
   ];
 
   List<String> topStreamerDiscord = [
-    'https://twitter.com/Aadii_Sawant',
     'https://discord.gg/aNPmrkc',
+    'https://discord.gg/dynamogaming',
     'https://discord.gg/Carryislive',
     'https://discord.gg/CdtSaq3',
     'https://discord.gg/TheRawKnee',
@@ -33,8 +33,8 @@ class Streamers {
   ];
 
   List<String> topStreamerFb = [
-    'https://www.facebook.com/DynamogamingYT/',
     'MORTAL',
+    'https://www.facebook.com/DynamogamingYT/',
     'https://www.facebook.com/CarryDeol/',
     'https://www.facebook.com/KrontenGamingOfficial/',
     'https://www.facebook.com/TheRawKnee',
@@ -44,8 +44,8 @@ class Streamers {
   ];
 
   List<String> topStreamerInsta = [
-    'https://www.instagram.com/dynamo__gaming/',
     'https://www.instagram.com/ig_mortal/',
+    'https://www.instagram.com/dynamo__gaming/',
     'https://www.instagram.com/carryminati/',
     'https://www.instagram.com/krontengaming/',
     'https://www.instagram.com/therawknee',
@@ -55,8 +55,8 @@ class Streamers {
   ];
 
   List<String> topStreamerLogo = [
-    'https://yt3.ggpht.com/a/AGF-l7_cVtwzXBO11YMPVPsQLWqTip3SBYqx2mXQdg=s500-c-k-c0xffffffff-no-rj-mo',
     'https://yt3.ggpht.com/a/AGF-l7_GO4U5p3tAVy03XPBTpecz9bdHj1ICFsjqLg=s500-c-k-c0xffffffff-no-rj-mo',
+    'https://yt3.ggpht.com/a/AGF-l7_cVtwzXBO11YMPVPsQLWqTip3SBYqx2mXQdg=s500-c-k-c0xffffffff-no-rj-mo',
     'https://yt3.ggpht.com/a/AGF-l7-gAhCX_0qa9zmDrPqt23i97daOPJFdezoIcw=s450-c-k-c0xffffffff-no-rj-mo',
     'https://yt3.ggpht.com/a/AGF-l7_4zfJRnxw08x2D-fBIqYTDLf8hxXOnEtMCag=s450-c-k-c0xffffffff-no-rj-mo',
     'https://yt3.ggpht.com/a/AGF-l79lDuA91M0OVkFZxWdnY7-fkNSEjc2fF9Ez_g=s450-c-k-c0xffffffff-no-rj-mo',
@@ -65,8 +65,8 @@ class Streamers {
     'https://yt3.ggpht.com/a/AGF-l78wJ59iJxl5ICh064g1xF5UX4ftKLZPuXxNqA=s450-c-k-c0xffffffff-no-rj-mo',
   ];
   List<String> topStreamersUrl = [
-    'https://www.youtube.com/user/sam14319',
     'https://www.youtube.com/channel/UC7Q7pl0z0MrdayvmAnchlJQ',
+    'https://www.youtube.com/user/sam14319',
     'https://www.youtube.com/channel/UC0IWRLai-BAwci_e9MylNGw',
     'https://www.youtube.com/channel/UCFbD2k_Rw_kYVTWb9k7t-cg',
     'https://www.youtube.com/channel/UCZaHw7tdjy3TNMH3ncsI4Bg',
@@ -141,7 +141,7 @@ class Streamers {
     'https://www.youtube.com/channel/UCKVei70N69V3V5wBQixHZbg',
     'https://www.youtube.com/user/tiwariayush52',
     'https://www.youtube.com/channel/UCw-cFch3EFVZHBX10PDDvSQ',
-    'https://www.youtube.com/channel/UCaA8TUWM6TJ5wj-DH60VEFg', //TODO:This channel has 2M Sub
+    'https://www.youtube.com/channel/UCaA8TUWM6TJ5wj-DH60VEFg',
     'https://www.youtube.com/channel/UCYxMATvBqKQx7utYcYK3waA',
     'https://www.youtube.com/channel/UCN3S-GAmJTcdAh7LZjg3jHQ',
     'https://www.youtube.com/channel/UCD4gGWo0CJE7Vy3AQAnJdFA',

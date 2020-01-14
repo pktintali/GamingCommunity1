@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
-import 'profile.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,7 +10,6 @@ class MyApp extends StatelessWidget {
       initialRoute: MyHomePage.id,
       routes: {
         MyHomePage.id: (context) => MyHomePage(),
-        Profile.id: (context) => Profile(),
       },
       debugShowCheckedModeBanner: false,
       title: 'I.G.C.',
