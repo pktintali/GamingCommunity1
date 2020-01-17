@@ -15,11 +15,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     context1 = context;
     checkStatus();
@@ -176,6 +171,10 @@ class _MyHomePageState extends State<MyHomePage> {
               rowGenerator(
                 caster(25, 0),
                 caster(26, 1),
+              ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 25),
+                child: Text(''),
               ),
             ],
           ),

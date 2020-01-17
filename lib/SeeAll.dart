@@ -168,6 +168,10 @@ class _SeeAllState extends State<SeeAll> {
             growing(31, 14),
             growing(32, 15),
           ),
+          rowGenerator(
+            growing(33, 16),
+            growing(34, 17),
+          ),
           SizedBox(
             height: 80,
           ),
